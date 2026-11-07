@@ -144,8 +144,15 @@ function localeSymbols(locale: string, currency: CurrencyCode): LocaleNumberSymb
   const cached = symbolCache.get(key);
   if (cached) return cached;
 
-  const number = partsOf(new Intl.NumberFormat(locale), -1234567.8);
+  // Separators come from the *currency* formatter — the one `format` uses. Some
+  // locales group or mark decimals differently for money (de-AT, fr-CH).
+  // `minimumFractionDigits: 1` makes zero-decimal currencies reveal the decimal mark.
+  const number = partsOf(
+    new Intl.NumberFormat(locale, { style: 'currency', currency, minimumFractionDigits: 1 }),
+    -1234567.8,
+  );
   const group = String(number.get('group'));
+  const decimal = String(number.get('decimal'));
   const currencyLabels = [locale, 'en'].flatMap((labelLocale) =>
     (['symbol', 'narrowSymbol', 'code'] as const).map((currencyDisplay) =>
       String(
@@ -163,10 +170,11 @@ function localeSymbols(locale: string, currency: CurrencyCode): LocaleNumberSymb
   const symbols: LocaleNumberSymbols = {
     // Space-like separators (U+00A0, U+202F, …) are canonicalised to a plain space.
     group: group.replace(SPACE_PATTERN, '') === '' ? ' ' : group,
-    decimal: String(number.get('decimal')),
-    noise: [...currencyLabels, currency.toLowerCase(), ...BIDI_MARKS].sort(
-      (a, b) => b.length - a.length,
-    ),
+    decimal,
+    // A label equal to a separator is kept: pt-CV writes 1$50 with `$` as the decimal mark.
+    noise: [...currencyLabels, currency.toLowerCase(), ...BIDI_MARKS]
+      .filter((label) => label !== decimal && label !== group)
+      .sort((a, b) => b.length - a.length),
     minusSigns: [String(number.get('minusSign')), '\u2212'],
     digits: new Map(
       nativeDigits

@@ -64,7 +64,7 @@ Enforced in `vitest.config.ts`; they may only go up.
   anything with a large input space. Prefer an _independent oracle_ over
   restating the implementation: `dates` is checked against `Date.UTC`,
   `expandSchedule` against a day-by-day predicate, `money.parse` by
-  round-tripping `money.format` across 12 locales. Shared arbitraries
+  round-tripping `money.format` across 15 locales (plus a 43-locale sweep). Shared arbitraries
   (`isoDateArb()`, `isoMonthArb()`) live in `@/test/arbitraries`; use
   `fc.gen()` to draw values that depend on earlier ones (e.g. exceptions on
   generated dates).

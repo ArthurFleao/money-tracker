@@ -141,6 +141,9 @@ describe('parse', () => {
     ['1.234', 'KWD', 'en-US', 1234],
     ['١٬٢٣٤٫٥٦', 'EGP', 'ar-EG', 123456],
     ['\u2212123,45', 'SEK', 'sv-SE', -12345],
+    // Money separators can differ from plain-number ones in CLDR.
+    ['€ 1.234,56', 'EUR', 'de-AT', 123456],
+    ['12.50', 'CHF', 'fr-CH', 1250],
   ])('parses %j as %s in %s', (input, currency, locale, expected) => {
     expect(parse(input, currency, locale)).toEqual({ ok: true, amountMinor: expected });
   });
@@ -183,7 +186,9 @@ describe('parse', () => {
     'en-US',
     'pt-BR',
     'de-DE',
+    'de-AT',
     'fr-FR',
+    'fr-CH',
     'de-CH',
     'en-IN',
     'ja-JP',
@@ -192,6 +197,7 @@ describe('parse', () => {
     'he-IL',
     'nl-NL',
     'sv-SE',
+    'pt-CV',
   ];
   const currencies = ['USD', 'BRL', 'EUR', 'JPY', 'KWD', 'INR', 'CHF'];
 
@@ -211,6 +217,93 @@ describe('parse', () => {
     );
   });
 
+  it('round-trips representative currencies in 43 locales', () => {
+    const sweepLocales = [
+      'en-US',
+      'en-GB',
+      'en-IN',
+      'en-ZA',
+      'es-ES',
+      'es-MX',
+      'es-AR',
+      'pt-BR',
+      'pt-PT',
+      'pt-CV',
+      'fr-FR',
+      'fr-CA',
+      'fr-CH',
+      'de-DE',
+      'de-AT',
+      'de-CH',
+      'it-IT',
+      'it-CH',
+      'nl-NL',
+      'nl-BE',
+      'sv-SE',
+      'nb-NO',
+      'da-DK',
+      'fi-FI',
+      'pl-PL',
+      'cs-CZ',
+      'ru-RU',
+      'uk-UA',
+      'tr-TR',
+      'el-GR',
+      'he-IL',
+      'ar-EG',
+      'ar-SA',
+      'fa-IR',
+      'hi-IN',
+      'bn-BD',
+      'th-TH',
+      'ja-JP',
+      'ko-KR',
+      'zh-CN',
+      'zh-TW',
+      'id-ID',
+      'vi-VN',
+    ];
+    // One currency per symbol family ($-likes, €, ¥, 0/3 decimals, RTL scripts, CVE).
+    const sweepCurrencies = [
+      'USD',
+      'EUR',
+      'JPY',
+      'KWD',
+      'BHD',
+      'BRL',
+      'CHF',
+      'INR',
+      'GBP',
+      'CVE',
+      'TWD',
+      'XCD',
+      'MXN',
+      'CAD',
+      'AUD',
+      'HKD',
+      'SEK',
+      'PLN',
+      'CZK',
+      'ILS',
+      'EGP',
+      'IRR',
+      'THB',
+      'KRW',
+      'VND',
+    ];
+    const failures: string[] = [];
+    for (const locale of sweepLocales) {
+      for (const code of sweepCurrencies) {
+        for (const amount of [-123_456_789, 5]) {
+          const text = format(amount, code, locale);
+          const result = parse(text, code, locale);
+          if (!result.ok || result.amountMinor !== amount)
+            failures.push(`${locale} ${code} ${text}`);
+        }
+      }
+    }
+    expect(failures).toEqual([]);
+  });
   it('round-trips the exact decimal string', () => {
     fc.assert(
       fc.property(

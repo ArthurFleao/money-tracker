@@ -34,12 +34,14 @@ wrong silently.
    with the fraction digits forced to the currency's exponent. No float is
    created, so values up to `Number.MAX_SAFE_INTEGER` format exactly.
 5. **Parsing** (`money.parse`) never uses floats. It reads the group and
-   decimal separators, minus sign and native digits for the locale from
-   `Intl`, strips the currency symbol/code (local and English forms) and bidi
-   marks, and accepts grouping separators only in valid positions (Western
-   3-digit or Indian 2/3-digit groups). Ambiguous input is rejected with a
-   reason (`empty`, `invalid`, `tooPrecise`, `outOfRange`) rather than guessed
-   — `"1.5"` in pt-BR is `invalid`, not 15.
+   decimal separators and minus sign from the locale's **currency** format
+   (the same one `format` uses — CLDR differs from plain numbers in e.g.
+   de-AT and fr-CH) and native digits from `Intl`, strips the currency
+   symbol/code (local and English forms) and bidi marks, and accepts grouping
+   separators only in valid positions (Western 3-digit or Indian 2/3-digit
+   groups). Ambiguous input is rejected with a reason (`empty`, `invalid`,
+   `tooPrecise`, `outOfRange`) rather than guessed — `"1.5"` in pt-BR is
+   `invalid`, not 15.
 6. Lint forbids `parseFloat`/`Number.parseFloat` anywhere in `src/`.
 
 ## Alternatives considered
@@ -55,8 +57,9 @@ wrong silently.
 
 - ±90 trillion dollars (2-decimal) is the representable range — ample for a
   household app; overflow throws instead of corrupting data.
-- `parse(format(x)) === x` is a property test across 12 locales (including
-  Arabic/Persian digits, French narrow no-break spaces, Swiss apostrophes and
-  Indian grouping) and 0/2/3-decimal currencies.
+- `parse(format(x)) === x` is a property test across 15 locales (including
+  Arabic/Persian digits, French narrow no-break spaces, Swiss apostrophes,
+  Indian grouping and pt-CV's `$` decimal mark) and 0/2/3-decimal currencies,
+  plus a deterministic sweep of 43 locales × 25 currencies.
 - Phase 9 multi-currency adds exchange rates on top of this representation; no
   data migration is needed because every entity already stores `currency`.

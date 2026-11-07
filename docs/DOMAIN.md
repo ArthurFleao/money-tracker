@@ -80,10 +80,11 @@ built-in ISO 4217 table (`JPY` 0, `USD` 2, `KWD` 3).
 | `money.parse('1.5', 'JPY', 'ja-JP')`                           | `{ ok: false, error: 'tooPrecise' }`                 |
 | `money.parse('12,34,567.89', 'INR', 'en-IN')`                  | `{ ok: true, amountMinor: 123456789 }`               |
 
-`parse` accepts an optional sign, the currency symbol or code (local or
-English form), native digits (Arabic, Persian, …) and grouping separators
-only in valid positions. `parse(format(x)) === x` is a property test across
-12 locales.
+`parse` uses the separators of the locale's **currency** format (the same
+ones `format` emits), accepts an optional sign, the currency symbol or code
+(local or English form), native digits (Arabic, Persian, …) and grouping
+separators only in valid positions. `parse(format(x)) === x` is a property
+test across 15 locales plus a 43-locale sweep.
 
 ## Dates
 
