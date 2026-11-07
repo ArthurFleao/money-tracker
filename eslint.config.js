@@ -9,9 +9,9 @@ import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 /**
- * Layer boundaries (PLAN.md Â§5.1, AGENTS.md rule 5):
- *   domain â†’ nothing Â· data â†’ domain Â· shared â†’ domain
- *   features â†’ domain | data | shared Â· app â†’ anything
+ * Layer boundaries (PLAN.md §5.1, AGENTS.md rule 5):
+ *   domain → nothing · data → domain · shared → domain
+ *   features → domain | data | shared · app → anything
  * `src/test` holds test helpers; only test files and other helpers may use it.
  */
 const LAYERS = [
@@ -117,6 +117,21 @@ export default defineConfig(
         },
       ],
       'no-restricted-imports': ['error', { patterns: STORAGE_SDK_PATTERNS }],
+      // Bare `location`/`history`/`event` silently resolve to window globals; use `window.x` explicitly.
+      'no-restricted-globals': [
+        'error',
+        'location',
+        'history',
+        'event',
+        'name',
+        'length',
+        'status',
+        'top',
+        'parent',
+        'self',
+        'close',
+        'open',
+      ],
     },
   },
   {
