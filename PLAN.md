@@ -697,7 +697,7 @@ until the previous one's Definition of Done is met.
 - [x] `money` (currency table, add/sub/mul, format, parse) with exhaustive tests.
 - [x] `dates` helpers with DST/leap tests.
 - [x] `expandSchedule` + exceptions + end conditions — property-based tests (`fast-check`) in addition to examples.
-- [ ] `computeWalletBalance`, `computeNetWorth`, `markPosted`, `buildForecast`, `summarizeMonth`, `upcoming`.
+- [x] `computeWalletBalance`, `computeNetWorth`, `markPosted`, `buildForecast`, `summarizeMonth`, `upcoming`.
 - [ ] `docs/DOMAIN.md` with worked examples; JSDoc on every export.
 - **DoD:** `src/domain` at 100% coverage; no React imports; ADRs for dates-as-strings and money-as-integers.
 
