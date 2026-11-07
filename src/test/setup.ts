@@ -8,6 +8,14 @@ import { installMatchMediaMock } from './matchMedia';
 // Animations are verified visually/e2e; unit tests run them instantly for determinism.
 MotionGlobalConfig.skipAnimations = true;
 
+// jsdom lacks ResizeObserver, which Radix popper-based primitives (Tooltip) need.
+class ResizeObserverStub {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+globalThis.ResizeObserver = ResizeObserverStub;
+
 beforeEach(() => {
   installMatchMediaMock();
 });

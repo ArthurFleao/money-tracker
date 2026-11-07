@@ -7,6 +7,10 @@ export const strings = {
     name: 'Money Tracker',
     tagline: 'See what you have, what is coming, and where you are headed.',
   },
+  common: {
+    close: 'Close',
+    loading: 'Loading…',
+  },
   theme: {
     legend: 'Theme',
     light: 'Light',
