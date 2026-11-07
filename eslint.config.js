@@ -152,6 +152,12 @@ export default defineConfig(
     },
   },
   {
+    files: ['src/test/**/*.{ts,tsx}', 'src/**/*.test.{ts,tsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
+  {
     files: ['src/data/**/*.{ts,tsx}'],
     rules: {
       'no-restricted-imports': 'off',
