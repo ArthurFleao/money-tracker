@@ -44,9 +44,11 @@ versions are incompatible with each other; this ADR records those trade-offs.
 
 ### Added when their phase starts (latest stable at that time; update this ADR)
 
-Zod (P1), date-fns (P1), fast-check (P1), Dexie (P2), React Hook Form +
+Zod (P1), fast-check (P1), Dexie (P2), React Hook Form +
 @hookform/resolvers (P3–P4), Radix Popover/DropdownMenu (as needed), Nivo
-(P6), size-limit (P7), Firebase + @firebase/rules-unit-testing (P8).
+(P6), size-limit (P7), Firebase + @firebase/rules-unit-testing (P8), date-fns
+(UI formatting only, if `Intl` is not enough — the domain does not use it, see
+[ADR-0002](./0002-dates-as-strings.md)).
 
 ### Deliberate holds (not the latest major)
 
