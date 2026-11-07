@@ -685,7 +685,7 @@ until the previous one's Definition of Done is met.
 - [x] Tailwind v4 with `@theme` tokens; dark/light via `.dark` class + system preference; `ThemeProvider` + toggle; fonts.
 - [x] ESLint flat config (ts, react-hooks, jsx-a11y, boundaries), Prettier (+ tailwind plugin), Husky, lint-staged, commitlint, gitleaks hook.
 - [x] Vitest + Testing Library + jsdom + fake-indexeddb setup; coverage thresholds; `src/test/*` helpers.
-- [ ] Playwright config (Chromium, WebKit, Pixel 7 viewport), axe integration, smoke test on `/`.
+- [x] Playwright config (Chromium, WebKit, Pixel 7 viewport), axe integration, smoke test on `/`.
 - [ ] GitHub Actions `ci.yml` (lint, typecheck, unit+coverage, build, e2e with artifacts), Dependabot, gitleaks action, issue/PR templates.
 - [ ] App shell: router, `AppShell` with sidebar/topbar/mobile nav, route placeholders, page transition, `ErrorBoundary`, Toaster.
 - [ ] Shared UI v1: Button, Card, Input, Select, Switch, Dialog/Sheet, Tabs, Tooltip, Skeleton, EmptyState, `AnimatedNumber`.
