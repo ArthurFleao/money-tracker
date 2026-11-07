@@ -9,6 +9,22 @@
       content="Money Tracker — see what you have, what is coming, and where you are headed."
     />
     <title>Money Tracker</title>
+    <script>
+      // Apply the stored theme before first paint to avoid a light/dark flash.
+      // Must stay in sync with src/shared/theme/theme.ts (THEME_STORAGE_KEY, resolveTheme).
+      (function () {
+        try {
+          var preference = localStorage.getItem('money-tracker:theme');
+          var dark =
+            preference === 'dark' ||
+            (preference !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (dark) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.style.colorScheme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
