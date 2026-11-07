@@ -33,6 +33,42 @@ const STORAGE_SDK_PATTERNS = [
   },
 ];
 
+/** `src/domain` is pure logic: no UI or state libraries (PLAN.md §13 Phase 1 DoD). */
+const UI_LIBRARY_PATTERNS = [
+  {
+    group: [
+      'react',
+      'react/*',
+      'react-dom',
+      'react-dom/*',
+      'react-router',
+      'react-router/*',
+      'motion',
+      'motion/*',
+      'zustand',
+      'zustand/*',
+      'sonner',
+      'lucide-react',
+      '@radix-ui/*',
+    ],
+    message: 'src/domain is pure logic and must not import UI or state libraries.',
+  },
+];
+
+/** Domain code never reads the clock; `today` is always a parameter (AGENTS.md rule 4). */
+const CLOCK_MESSAGE = 'Domain code never reads the clock — take `today` as a parameter.';
+const CLOCK_SYNTAX = [
+  { selector: "MemberExpression[object.name='Date'][property.name='now']", message: CLOCK_MESSAGE },
+  { selector: "NewExpression[callee.name='Date'][arguments.length=0]", message: CLOCK_MESSAGE },
+  { selector: "CallExpression[callee.name='Date']", message: CLOCK_MESSAGE },
+  {
+    selector: "MemberExpression[object.name='performance'][property.name='now']",
+    message: CLOCK_MESSAGE,
+  },
+];
+
+const PARSE_FLOAT_MESSAGE = 'Never parse money with floats — use money.parse() (AGENTS.md rule 2).';
+
 export default defineConfig(
   {
     ignores: [
@@ -131,7 +167,23 @@ export default defineConfig(
         'self',
         'close',
         'open',
+        { name: 'parseFloat', message: PARSE_FLOAT_MESSAGE },
       ],
+      'no-restricted-properties': [
+        'error',
+        { object: 'Number', property: 'parseFloat', message: PARSE_FLOAT_MESSAGE },
+      ],
+    },
+  },
+  {
+    files: ['src/domain/**/*.{ts,tsx}'],
+    ignores: ['src/**/*.test.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        { patterns: [...STORAGE_SDK_PATTERNS, ...UI_LIBRARY_PATTERNS] },
+      ],
+      'no-restricted-syntax': ['error', ...CLOCK_SYNTAX],
     },
   },
   {
