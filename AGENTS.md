@@ -53,6 +53,9 @@ This file is the short list of rules you must never break while implementing it.
 
 ## 4. Commands
 
+Prerequisites: Node 24 (`.nvmrc`) and pnpm 12 (`packageManager`). First e2e
+run: `pnpm exec playwright install chromium webkit`.
+
 | Purpose | Command |
 |---|---|
 | Dev server | `pnpm dev` |

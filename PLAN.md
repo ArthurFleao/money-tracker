@@ -689,7 +689,7 @@ until the previous one's Definition of Done is met.
 - [x] GitHub Actions `ci.yml` (lint, typecheck, unit+coverage, build, e2e with artifacts), Dependabot, gitleaks action, issue/PR templates.
 - [x] App shell: router, `AppShell` with sidebar/topbar/mobile nav, route placeholders, page transition, `ErrorBoundary`, Toaster.
 - [x] Shared UI v1: Button, Card, Input, Select, Switch, Dialog/Sheet, Tabs, Tooltip, Skeleton, EmptyState, `AnimatedNumber`.
-- [ ] Docs: README, AGENTS.md, copilot-instructions, CONTRIBUTING, TESTING, DESIGN, SECURITY, DEPLOY, ARCHITECTURE, ADR template + ADR-0001 tech stack, LICENSE (MIT), CODE_OF_CONDUCT, CHANGELOG, `.env.example`, `.gitignore`.
+- [x] Docs: README, AGENTS.md, copilot-instructions, CONTRIBUTING, TESTING, DESIGN, SECURITY, DEPLOY, ARCHITECTURE, ADR template + ADR-0001 tech stack, LICENSE (MIT), CODE_OF_CONDUCT, CHANGELOG, `.env.example`, `.gitignore`.
 - **DoD:** `pnpm dev` shows themed shell with working navigation; CI green on a PR; all docs exist (skeletons acceptable where the phase hasn't happened).
 
 ### Phase 1 — Domain core (pure logic, 100% coverage)
