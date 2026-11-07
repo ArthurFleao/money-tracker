@@ -4,15 +4,17 @@ import { expectNoA11yViolations } from './fixtures/axe';
 const html = (page: Page) => page.locator('html');
 const DARK = /\bdark\b/;
 
+/** The toggle lives in the sidebar (desktop) and the top bar (mobile); use whichever is visible. */
 async function chooseTheme(page: Page, label: 'Light' | 'Dark' | 'System') {
-  await page.getByTitle(label, { exact: true }).click();
+  await page.getByTitle(label, { exact: true }).filter({ visible: true }).click();
   await expect(page.getByRole('radio', { name: label })).toBeChecked();
 }
 
 test.describe('smoke', () => {
   test('home renders and is accessible in light and dark', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByRole('heading', { level: 1, name: 'Money Tracker' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeVisible();
+    await expect(page).toHaveTitle('Dashboard · Money Tracker');
     await expectNoA11yViolations(page);
 
     await chooseTheme(page, 'Dark');

@@ -11,6 +11,7 @@ export default mergeConfig(
       exclude: [...configDefaults.exclude, 'e2e/**'],
       restoreMocks: true,
       unstubGlobals: true,
+      unstubEnvs: true,
       coverage: {
         provider: 'v8',
         reporter: ['text', 'html', 'lcov', 'json-summary'],

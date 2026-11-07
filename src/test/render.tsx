@@ -1,7 +1,7 @@
 import { render, type RenderOptions, type RenderResult } from '@testing-library/react';
 import userEvent, { type UserEvent } from '@testing-library/user-event';
 import type { ReactElement, ReactNode } from 'react';
-import { ThemeProvider } from '@/app/providers/ThemeProvider';
+import { AppProviders } from '@/app/providers/AppProviders';
 
 export interface RenderWithProvidersOptions extends Omit<RenderOptions, 'wrapper'> {
   /** Extra wrapper rendered inside the app providers (e.g. a test router). */
@@ -10,10 +10,6 @@ export interface RenderWithProvidersOptions extends Omit<RenderOptions, 'wrapper
 
 export interface RenderWithProvidersResult extends RenderResult {
   user: UserEvent;
-}
-
-function AppProviders({ children }: { children: ReactNode }) {
-  return <ThemeProvider>{children}</ThemeProvider>;
 }
 
 /**

@@ -1,11 +1,11 @@
-import { screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import { renderWithProviders } from '@/test/render';
 import { App } from './App';
 
 describe('App', () => {
-  it('renders the app title', () => {
-    renderWithProviders(<App />);
-    expect(screen.getByRole('heading', { level: 1, name: 'Money Tracker' })).toBeInTheDocument();
+  it('boots into the dashboard inside the app shell', async () => {
+    render(<App />);
+    expect(await screen.findByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+    expect(screen.getByRole('navigation', { name: 'Primary' })).toBeInTheDocument();
   });
 });
