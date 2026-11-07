@@ -1,5 +1,46 @@
 import { describe, expect, it } from 'vitest';
-import { createSequence, defineFactory } from './factories';
+import {
+  HouseholdSchema,
+  RecurringRuleSchema,
+  ScheduleSchema,
+  TransactionSchema,
+  WalletSchema,
+} from '@/domain/schemas';
+import {
+  createSequence,
+  dailySchedule,
+  defineFactory,
+  makeHousehold,
+  makeRecurringRule,
+  makeTransaction,
+  makeWallet,
+  monthlySchedule,
+  weeklySchedule,
+  yearlySchedule,
+} from './factories';
+
+describe('entity factories', () => {
+  it('build schema-valid entities', () => {
+    expect(HouseholdSchema.parse(makeHousehold())).toEqual(makeHousehold());
+    expect(() => WalletSchema.parse(makeWallet())).not.toThrow();
+    expect(() => TransactionSchema.parse(makeTransaction())).not.toThrow();
+    expect(() => RecurringRuleSchema.parse(makeRecurringRule())).not.toThrow();
+    for (const schedule of [
+      dailySchedule(),
+      weeklySchedule(),
+      monthlySchedule(),
+      yearlySchedule(),
+    ]) {
+      expect(ScheduleSchema.parse(schedule)).toEqual(schedule);
+    }
+  });
+
+  it('give each entity a fresh id', () => {
+    expect(makeWallet().id).not.toBe(makeWallet().id);
+    expect(makeTransaction().id).not.toBe(makeTransaction().id);
+    expect(makeRecurringRule().id).not.toBe(makeRecurringRule().id);
+  });
+});
 
 describe('createSequence', () => {
   it('produces deterministic, prefixed, increasing ids', () => {

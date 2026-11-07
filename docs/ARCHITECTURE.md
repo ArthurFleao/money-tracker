@@ -19,7 +19,7 @@ see `eslint.config.js`). `dexie` and `firebase` may only be imported from
 `src/data/` (`no-restricted-imports`). `src/test/` holds test helpers and may
 only be used by test files.
 
-## Directory map (Phase 0)
+## Directory map
 
 ```
 src/
@@ -31,7 +31,14 @@ src/
 │   ├── layout/               RootLayout, AppShell, Sidebar, TopBar, MobileNav,
 │   │                         AnimatedOutlet, RouteErrorBoundary, navItems
 │   └── routes/               PlaceholderPage
-├── domain/                   (Phase 1)
+├── domain/                   pure logic, 100 % covered (see docs/DOMAIN.md)
+│   ├── index.ts              public API barrel (`@/domain`)
+│   ├── dates/                YYYY-MM-DD helpers (timezone-free)
+│   ├── money/                ISO 4217 table, integer arithmetic, format/parse
+│   ├── schemas/              Zod schemas + inferred entity types
+│   ├── recurrence/           Occurrence, expandSchedule, exceptions, markPosted
+│   ├── balances/             computeWalletBalance, computeNetWorth
+│   └── forecast/             buildForecast, summarizeMonth, upcoming
 ├── data/                     (Phase 2)
 ├── features/                 (Phase 3+)
 ├── shared/
@@ -42,8 +49,13 @@ src/
 │   ├── i18n/strings.ts       every user-facing string (en-US)
 │   └── utils/                cn, safeStorage
 ├── styles/                   Tailwind v4 tokens (index.css), fonts
-└── test/                     setup, render helper, factories, mocks
+└── test/                     setup, render helper, factories, fast-check arbitraries, mocks
 ```
+
+`src/domain` is additionally linted to forbid UI/state/storage imports and
+clock reads (`Date.now()`, `new Date()`, `Date()`, `performance.now()`); see
+[ADR-0002](./adr/0002-dates-as-strings.md) and
+[ADR-0003](./adr/0003-money-as-integer-minor-units.md).
 
 ## Routing
 
