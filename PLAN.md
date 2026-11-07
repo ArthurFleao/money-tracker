@@ -693,9 +693,9 @@ until the previous one's Definition of Done is met.
 - **DoD:** `pnpm dev` shows themed shell with working navigation; CI green on a PR; all docs exist (skeletons acceptable where the phase hasn't happened).
 
 ### Phase 1 — Domain core (pure logic, 100% coverage)
-- [ ] Zod schemas + inferred types for all entities; refinements (positive integer amounts, currency match, valid dates, schedule invariants).
-- [ ] `money` (currency table, add/sub/mul, format, parse) with exhaustive tests.
-- [ ] `dates` helpers with DST/leap tests.
+- [x] Zod schemas + inferred types for all entities; refinements (positive integer amounts, currency match, valid dates, schedule invariants).
+- [x] `money` (currency table, add/sub/mul, format, parse) with exhaustive tests.
+- [x] `dates` helpers with DST/leap tests.
 - [ ] `expandSchedule` + exceptions + end conditions — property-based tests (`fast-check`) in addition to examples.
 - [ ] `computeWalletBalance`, `computeNetWorth`, `markPosted`, `buildForecast`, `summarizeMonth`, `upcoming`.
 - [ ] `docs/DOMAIN.md` with worked examples; JSDoc on every export.
