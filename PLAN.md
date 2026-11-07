@@ -686,7 +686,7 @@ until the previous one's Definition of Done is met.
 - [x] ESLint flat config (ts, react-hooks, jsx-a11y, boundaries), Prettier (+ tailwind plugin), Husky, lint-staged, commitlint, gitleaks hook.
 - [x] Vitest + Testing Library + jsdom + fake-indexeddb setup; coverage thresholds; `src/test/*` helpers.
 - [x] Playwright config (Chromium, WebKit, Pixel 7 viewport), axe integration, smoke test on `/`.
-- [ ] GitHub Actions `ci.yml` (lint, typecheck, unit+coverage, build, e2e with artifacts), Dependabot, gitleaks action, issue/PR templates.
+- [x] GitHub Actions `ci.yml` (lint, typecheck, unit+coverage, build, e2e with artifacts), Dependabot, gitleaks action, issue/PR templates.
 - [ ] App shell: router, `AppShell` with sidebar/topbar/mobile nav, route placeholders, page transition, `ErrorBoundary`, Toaster.
 - [ ] Shared UI v1: Button, Card, Input, Select, Switch, Dialog/Sheet, Tabs, Tooltip, Skeleton, EmptyState, `AnimatedNumber`.
 - [ ] Docs: README, AGENTS.md, copilot-instructions, CONTRIBUTING, TESTING, DESIGN, SECURITY, DEPLOY, ARCHITECTURE, ADR template + ADR-0001 tech stack, LICENSE (MIT), CODE_OF_CONDUCT, CHANGELOG, `.env.example`, `.gitignore`.
