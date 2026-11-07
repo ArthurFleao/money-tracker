@@ -3,6 +3,7 @@
  * never through inline object literals (AGENTS.md §5). Every factory returns a
  * schema-valid entity in the test household and currency.
  */
+import type { Occurrence } from '@/domain/recurrence';
 import type {
   Household,
   RecurrenceException,
@@ -199,4 +200,20 @@ export const makeRecurringRule = defineFactory<RecurringRule>(() => ({
   exceptions: [],
   active: true,
   ...audit,
+}));
+/**
+ * An unposted $1,000.00 "Rent" occurrence of `rule-1` on 2026-02-01.
+ *
+ * @example
+ * makeOccurrence({ kind: 'income', date: '2026-02-05', originalDate: '2026-02-05' });
+ */
+export const makeOccurrence = defineFactory<Occurrence>(() => ({
+  ruleId: 'rule-1',
+  date: '2026-02-01',
+  originalDate: '2026-02-01',
+  kind: 'expense',
+  amountMinor: 100_000,
+  walletId: 'wallet-1',
+  description: 'Rent',
+  posted: false,
 }));
