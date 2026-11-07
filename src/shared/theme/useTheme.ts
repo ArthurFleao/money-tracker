@@ -1,22 +1,17 @@
-import { createContext, useContext } from 'react';
-import type { ResolvedTheme, ThemePreference } from './theme';
+import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
+import { DARK_SCHEME_QUERY, resolveTheme, type ResolvedTheme, type ThemePreference } from './theme';
+import { useThemeStore } from './themeStore';
 
-export interface ThemeContextValue {
+export interface UseThemeResult {
   preference: ThemePreference;
   resolvedTheme: ResolvedTheme;
   setPreference: (preference: ThemePreference) => void;
 }
 
-export const ThemeContext = createContext<ThemeContextValue | null>(null);
-
-/**
- * Current theme preference, the theme actually applied, and a setter.
- * Must be used under `ThemeProvider`.
- */
-export function useTheme(): ThemeContextValue {
-  const value = useContext(ThemeContext);
-  if (!value) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
-  return value;
+/** Current theme preference, the theme actually applied (following the OS for `system`), and a setter. */
+export function useTheme(): UseThemeResult {
+  const preference = useThemeStore((state) => state.preference);
+  const setPreference = useThemeStore((state) => state.setPreference);
+  const systemPrefersDark = useMediaQuery(DARK_SCHEME_QUERY);
+  return { preference, resolvedTheme: resolveTheme(preference, systemPrefersDark), setPreference };
 }

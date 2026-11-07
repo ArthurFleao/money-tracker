@@ -5,6 +5,9 @@ import { MotionGlobalConfig } from 'motion/react';
 import { afterEach, beforeEach, vi } from 'vitest';
 import { installMatchMediaMock } from './matchMedia';
 
+// Every Zustand store is reset to its initial state after each test.
+vi.mock('zustand', () => import('./zustandMock'));
+
 // Animations are verified visually/e2e; unit tests run them instantly for determinism.
 MotionGlobalConfig.skipAnimations = true;
 

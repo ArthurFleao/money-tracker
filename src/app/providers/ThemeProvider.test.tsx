@@ -1,6 +1,7 @@
-import { act, render, renderHook, screen } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { DARK_SCHEME_QUERY, THEME_STORAGE_KEY } from '@/shared/theme/theme';
+import { useThemeStore } from '@/shared/theme/themeStore';
 import { useTheme } from '@/shared/theme/useTheme';
 import { installMatchMediaMock } from '@/test/matchMedia';
 import { ThemeProvider } from './ThemeProvider';
@@ -37,20 +38,26 @@ describe('ThemeProvider', () => {
     expect(root()).toHaveClass('dark');
   });
 
-  it('restores the stored preference', () => {
-    localStorage.setItem(THEME_STORAGE_KEY, 'dark');
+  it('restores the stored preference', async () => {
+    localStorage.setItem(
+      THEME_STORAGE_KEY,
+      JSON.stringify({ state: { preference: 'dark' }, version: 1 }),
+    );
+    await act(async () => {
+      await useThemeStore.persist.rehydrate();
+    });
     const { result } = renderUseTheme();
     expect(result.current.preference).toBe('dark');
     expect(root()).toHaveClass('dark');
   });
 
-  it('applies and persists a new preference', () => {
+  it('applies a new preference', () => {
     const { result } = renderUseTheme();
     act(() => {
       result.current.setPreference('dark');
     });
     expect(root()).toHaveClass('dark');
-    expect(localStorage.getItem(THEME_STORAGE_KEY)).toBe('dark');
+    expect(root().style.colorScheme).toBe('dark');
 
     act(() => {
       result.current.setPreference('light');
@@ -67,27 +74,5 @@ describe('ThemeProvider', () => {
       result.current.setPreference('dark');
     });
     expect(root()).toHaveClass('dark');
-  });
-
-  it('stops listening to the OS after unmount', () => {
-    const media = installMatchMediaMock();
-    const { unmount } = render(
-      <ThemeProvider>
-        <span>content</span>
-      </ThemeProvider>,
-    );
-    expect(screen.getByText('content')).toBeInTheDocument();
-    unmount();
-    expect(() => {
-      media.setMatches(DARK_SCHEME_QUERY, true);
-    }).not.toThrow();
-    expect(root()).not.toHaveClass('dark');
-  });
-});
-
-describe('useTheme', () => {
-  it('throws outside a ThemeProvider', () => {
-    vi.spyOn(console, 'error').mockImplementation(() => undefined);
-    expect(() => renderHook(() => useTheme())).toThrow(/ThemeProvider/);
   });
 });

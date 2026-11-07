@@ -44,3 +44,15 @@ test.describe('system theme', () => {
     await expect(page.getByRole('radio', { name: 'System' })).toBeChecked();
   });
 });
+
+test('applies the stored theme before the app bundle runs (no flash)', async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem(
+      'money-tracker:theme',
+      JSON.stringify({ state: { preference: 'dark' }, version: 1 }),
+    );
+  });
+  await page.route('**/assets/*.js', (route) => route.abort());
+  await page.goto('/');
+  await expect(html(page)).toHaveClass(DARK);
+});

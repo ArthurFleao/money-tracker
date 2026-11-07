@@ -19,7 +19,7 @@ describe('ThemeToggle', () => {
     await user.click(screen.getByRole('radio', { name: 'Dark' }));
     expect(screen.getByRole('radio', { name: 'Dark' })).toBeChecked();
     expect(document.documentElement).toHaveClass('dark');
-    expect(localStorage.getItem(THEME_STORAGE_KEY)).toBe('dark');
+    expect(localStorage.getItem(THEME_STORAGE_KEY)).toContain('"preference":"dark"');
   });
 
   it('is operable with the keyboard', async () => {

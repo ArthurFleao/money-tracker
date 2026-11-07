@@ -11,10 +11,12 @@
     <title>Money Tracker</title>
     <script>
       // Apply the stored theme before first paint to avoid a light/dark flash.
-      // Must stay in sync with src/shared/theme/theme.ts (THEME_STORAGE_KEY, resolveTheme).
+      // Must stay in sync with src/shared/theme (THEME_STORAGE_KEY, persisted
+      // Zustand shape `{ state: { preference } }`, resolveTheme).
       (function () {
         try {
-          var preference = localStorage.getItem('money-tracker:theme');
+          var raw = localStorage.getItem('money-tracker:theme');
+          var preference = raw ? JSON.parse(raw).state.preference : null;
           var dark =
             preference === 'dark' ||
             (preference !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
