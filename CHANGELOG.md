@@ -7,6 +7,29 @@ Conventional Commits.
 
 ## [Unreleased]
 
+### Added — Phase 1 (domain core)
+
+- `src/domain` public API (`@/domain`), pure and clock-free, with 100 % test
+  coverage including fast-check property tests.
+- Timezone-free `YYYY-MM-DD` date helpers (UTC epoch-day arithmetic, verified
+  across DST gaps and Samoa's skipped day) — ADR-0002.
+- `money`: ISO 4217 currency table (0/2/3 decimals), integer arithmetic that
+  rejects floats, exact `Intl` formatting and locale-aware parsing (symbols,
+  native digits, Swiss/French/Indian grouping) — ADR-0003.
+- Zod schemas and inferred types for Household, Wallet, Transaction and
+  RecurringRule (schedules, end conditions, exceptions) with refinements and
+  `requireCurrency()` for the MVP base-currency rule.
+- Recurrence: `expandSchedule` (month-end clamping, `'last'`, Feb 29, interval
+  alignment, `afterCount` counting skips, moved occurrences), exception
+  helpers and `markPosted`.
+- Balances and projections: `computeWalletBalance`, `computeNetWorth`,
+  `buildForecast` (floor detection, wallet scope, what-if rule exclusion),
+  `summarizeMonth` and `upcoming`.
+- Test factories for every entity, schedule and exception; fast-check
+  arbitraries.
+- Lint guards: no UI/state imports or clock reads in `src/domain`; no
+  `parseFloat` anywhere in `src`.
+
 ### Added — Phase 0 (foundation)
 
 - Vite + React 19 + strict TypeScript scaffold with pnpm and the `@/` alias.

@@ -8,6 +8,7 @@ import {
   MinorSchema,
 } from './common';
 
+/** Kinds of wallet. A `credit` wallet's balance is negative when money is owed. */
 export const WALLET_TYPES = [
   'cash',
   'checking',

@@ -43,13 +43,35 @@ Enforced in `vitest.config.ts`; they may only go up.
   configured `userEvent`.
 - **Query by role and label** (`getByRole('button', { name: 'Save' })`).
   `data-testid` is only allowed on chart wrappers.
-- **Test data comes from `@/test/factories`** (`defineFactory`,
-  `createSequence`; entity builders such as `makeWallet()` arrive in Phase 1).
+- **Test data comes from `@/test/factories`**: `makeHousehold()`,
+  `makeWallet()`, `makeTransaction()`, `makeRecurringRule()`,
+  `makeOccurrence()`, schedule builders (`dailySchedule()`, `weeklySchedule()`,
+  `monthlySchedule()`, `yearlySchedule()`) and exception builders
+  (`skipException()`, `overrideException()`). Every factory returns a
+  schema-valid entity in the test household and `USD`; pass overrides for what
+  the test is about. Generic helpers: `defineFactory`, `createSequence`.
   Never inline entity literals.
 - **Never use the real clock.** Inject `today`; use `vi.useFakeTimers()` when
   a component schedules work.
 - Components that need a route: build a `createMemoryRouter(routes, { initialEntries })`
   and render `<RouterProvider router={router} />`.
+
+### Domain tests (`src/domain`)
+
+- **TDD and 100 % coverage.** Write examples for every edge case listed in
+  PLAN.md §4.2 next to the code (`X.test.ts`).
+- **Property-based tests** with [fast-check](https://fast-check.dev/) for
+  anything with a large input space. Prefer an _independent oracle_ over
+  restating the implementation: `dates` is checked against `Date.UTC`,
+  `expandSchedule` against a day-by-day predicate, `money.parse` by
+  round-tripping `money.format` across 12 locales. Shared arbitraries
+  (`isoDateArb()`, `isoMonthArb()`) live in `@/test/arbitraries`; use
+  `fc.gen()` to draw values that depend on earlier ones (e.g. exceptions on
+  generated dates).
+- **Timezones.** Domain results must not depend on `process.env.TZ`. To check,
+  `vi.stubEnv('TZ', 'Pacific/Apia')` inside the test (restored automatically)
+  — see the sweep at the end of `dates.test.ts`.
+- `src/domain` has no `node` types; use `vi.stubEnv` rather than `process.env`.
 
 ### What `src/test/setup.ts` gives every test
 

@@ -240,6 +240,47 @@ describe('buildForecast', () => {
     expect(buildForecast(input(), '2026-03-12', '2026-03-11', TODAY)).toEqual([]);
   });
 
+  it('matches the worked example in docs/DOMAIN.md', () => {
+    const checking = makeWallet({
+      initialBalanceMinor: 150_000,
+      initialBalanceDate: '2026-11-01',
+    });
+    const groceries = makeTransaction({
+      walletId: checking.id,
+      amountMinor: 20_000,
+      date: '2026-11-03',
+    });
+    const dentist = makeTransaction({
+      walletId: checking.id,
+      amountMinor: 15_000,
+      date: '2026-11-08',
+      status: 'pending',
+    });
+    const rent = makeRecurringRule({
+      walletId: checking.id,
+      amountMinor: 120_000,
+      schedule: monthlySchedule({ dayOfMonth: 10, startDate: '2026-01-10' }),
+    });
+    const points = buildForecast(
+      {
+        wallets: [checking],
+        transactions: [groceries, dentist],
+        rules: [rent],
+        balanceFloorMinor: 10_000,
+      },
+      '2026-11-07',
+      '2026-11-11',
+      '2026-11-07',
+    );
+    expect(points.map((p) => [p.date, p.deltaMinor, p.balanceMinor, p.belowFloor])).toEqual([
+      ['2026-11-07', 0, 130_000, false],
+      ['2026-11-08', -15_000, 115_000, false],
+      ['2026-11-09', 0, 115_000, false],
+      ['2026-11-10', -120_000, -5_000, true],
+      ['2026-11-11', 0, -5_000, true],
+    ]);
+  });
+
   it('accumulates deltas and agrees with net worth for cleared history', () => {
     fc.assert(
       fc.property(

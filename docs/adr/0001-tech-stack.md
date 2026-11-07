@@ -42,9 +42,16 @@ versions are incompatible with each other; this ADR records those trade-offs.
 | Secret scanning       | gitleaks (binary + `gitleaks/gitleaks-action@v3`)                                                            | 8.30                                           |
 | CI actions            | actions/checkout · setup-node · upload-artifact · pnpm/action-setup                                          | v7 · v7 · v7 · v6                              |
 
+### Installed in Phase 1
+
+| Concern                | Package    | Version |
+| ---------------------- | ---------- | ------- |
+| Validation             | zod        | 4.6     |
+| Property-based testing | fast-check | 4.10    |
+
 ### Added when their phase starts (latest stable at that time; update this ADR)
 
-Zod (P1), fast-check (P1), Dexie (P2), React Hook Form +
+Dexie (P2), React Hook Form +
 @hookform/resolvers (P3–P4), Radix Popover/DropdownMenu (as needed), Nivo
 (P6), size-limit (P7), Firebase + @firebase/rules-unit-testing (P8), date-fns
 (UI formatting only, if `Intl` is not enough — the domain does not use it, see

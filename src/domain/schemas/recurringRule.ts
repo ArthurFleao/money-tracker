@@ -16,6 +16,7 @@ export const WeekdaySchema = z.literal([0, 1, 2, 3, 4, 5, 6]);
 /** Day of the month, or `'last'`. Days past the end of a short month clamp to its last day. */
 export const DayOfMonthSchema = z.union([z.int().min(1).max(31), z.literal('last')]);
 
+/** How a schedule stops: never, after a date (inclusive) or after a number of occurrences. */
 export const ScheduleEndSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('never') }),
   z.object({ type: z.literal('onDate'), date: ISODateSchema }),
